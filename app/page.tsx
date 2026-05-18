@@ -1,3 +1,10 @@
+import { Nav } from "@/components/sections/nav";
+
 export default function Home() {
-  return <main>{/* Sections will be added here during Phase B */}</main>;
+  return (
+    <>
+      <Nav />
+      <main>{/* Sections will be added here section by section */}</main>
+    </>
+  );
 }
