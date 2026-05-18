@@ -5,6 +5,7 @@ import { Features } from "@/components/sections/features";
 import { Security } from "@/components/sections/security";
 import { Pricing } from "@/components/sections/pricing";
 import { Waitlist } from "@/components/sections/waitlist";
+import { Footer } from "@/components/sections/footer";
 
 export default function Home() {
   return (
@@ -17,8 +18,8 @@ export default function Home() {
         <Security />
         <Pricing />
         <Waitlist />
-        {/* Footer will be added here */}
       </main>
+      <Footer />
     </>
   );
 }
