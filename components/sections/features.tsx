@@ -94,8 +94,48 @@ function ClientListMockup() {
 }
 
 // ------------------------------------------------------------------
-// Mockup 2: Session log
+// Mockup 2: Session log — rich text editor
 // ------------------------------------------------------------------
+const toolbarButtons = [
+  { label: "B", className: "font-bold", title: "Bold" },
+  { label: "I", className: "italic", title: "Italic" },
+  { label: "H1", className: "font-bold text-[9px]", title: "Heading 1" },
+  { label: "H2", className: "font-bold text-[9px]", title: "Heading 2" },
+];
+
+function CheckItem({ done, children }: { done: boolean; children: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-2">
+      <div
+        className={cn(
+          "mt-0.5 w-3.5 h-3.5 rounded flex-shrink-0 border-2 flex items-center justify-center",
+          done ? "bg-teal-500 border-teal-500" : "border-slate-300"
+        )}
+      >
+        {done && (
+          <svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true">
+            <path
+              d="M1.5 4L3 5.5L6.5 2"
+              stroke="white"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
+      </div>
+      <span
+        className={cn(
+          "text-[12px] leading-relaxed",
+          done ? "line-through text-slate-400" : "text-slate-700"
+        )}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
+
 function SessionLogMockup() {
   return (
     <AppWindow>
@@ -118,27 +158,124 @@ function SessionLogMockup() {
             <p className="text-sm font-medium text-slate-800">50 min</p>
           </div>
         </div>
+
         <div>
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-2">
             Session notes
           </p>
-          <div className="bg-slate-50 rounded-lg border border-slate-100 p-3 text-[12px] text-slate-700 leading-relaxed">
-            Client discussed ongoing challenges with work-life boundaries and difficulty saying no
-            to family requests. Explored link to early family role as a &ldquo;fixer.&rdquo; CBT
-            reframing applied — client receptive. Homework: boundary log for one week.
+
+          {/* Rich text editor */}
+          <div className="rounded-lg border border-slate-200 overflow-hidden">
+            {/* Formatting toolbar */}
+            <div className="flex items-center gap-0.5 px-2 py-1.5 bg-slate-50 border-b border-slate-100">
+              {toolbarButtons.map(({ label, className, title }) => (
+                <div
+                  key={title}
+                  title={title}
+                  aria-label={title}
+                  className={cn(
+                    "w-6 h-6 rounded flex items-center justify-center text-[11px] text-slate-600 cursor-default hover:bg-slate-200",
+                    className
+                  )}
+                >
+                  {label}
+                </div>
+              ))}
+              <div className="w-px h-4 bg-slate-200 mx-1.5" aria-hidden="true" />
+              {/* Unordered list */}
+              <div
+                title="Bullet list"
+                className="w-6 h-6 rounded flex items-center justify-center cursor-default hover:bg-slate-200"
+                aria-label="Bullet list"
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <circle cx="1.5" cy="3" r="1" fill="#64748b" />
+                  <circle cx="1.5" cy="6" r="1" fill="#64748b" />
+                  <circle cx="1.5" cy="9" r="1" fill="#64748b" />
+                  <rect x="4" y="2.5" width="7" height="1" rx="0.5" fill="#64748b" />
+                  <rect x="4" y="5.5" width="7" height="1" rx="0.5" fill="#64748b" />
+                  <rect x="4" y="8.5" width="7" height="1" rx="0.5" fill="#64748b" />
+                </svg>
+              </div>
+              {/* Checklist */}
+              <div
+                title="Checklist"
+                className="w-6 h-6 rounded flex items-center justify-center cursor-default hover:bg-slate-200 bg-slate-200"
+                aria-label="Checklist"
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <rect
+                    x="0.5"
+                    y="0.5"
+                    width="5"
+                    height="5"
+                    rx="1"
+                    stroke="#0f766e"
+                    strokeWidth="1"
+                  />
+                  <path
+                    d="M1.5 3L2.8 4.2L4.5 1.8"
+                    stroke="#0f766e"
+                    strokeWidth="1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect
+                    x="0.5"
+                    y="6.5"
+                    width="5"
+                    height="5"
+                    rx="1"
+                    stroke="#64748b"
+                    strokeWidth="1"
+                  />
+                  <rect x="7.5" y="1.5" width="4" height="1" rx="0.5" fill="#64748b" />
+                  <rect x="7.5" y="7.5" width="4" height="1" rx="0.5" fill="#64748b" />
+                </svg>
+              </div>
+              <div className="w-px h-4 bg-slate-200 mx-1.5" aria-hidden="true" />
+              {/* Emoji */}
+              <div
+                title="Emoji"
+                className="w-6 h-6 rounded flex items-center justify-center text-[12px] cursor-default hover:bg-slate-200"
+                aria-label="Emoji"
+              >
+                🙂
+              </div>
+            </div>
+
+            {/* Editor body */}
+            <div className="px-3 pt-3 pb-2 space-y-2 bg-white min-h-[140px]">
+              {/* H1 heading */}
+              <p className="text-[13px] font-bold text-slate-900">Session themes 🧠</p>
+
+              {/* Paragraph with bold */}
+              <p className="text-[12px] text-slate-700 leading-relaxed">
+                Client exploring <strong className="text-slate-900">boundary setting</strong> with
+                family. Identified link to early caretaker role. CBT reframing well received. 😔
+              </p>
+
+              {/* Checklist label */}
+              <p className="text-[11px] font-semibold text-slate-500 pt-1">Goals this session</p>
+
+              {/* Checklist */}
+              <div className="space-y-1.5">
+                <CheckItem done>Review CBT homework from last week</CheckItem>
+                <CheckItem done>Reframing exercise — completed in session</CheckItem>
+                <CheckItem done={false}>Practice assertive communication script</CheckItem>
+                <CheckItem done={false}>Set boundary log reminder</CheckItem>
+              </div>
+
+              {/* Cursor */}
+              <span
+                className="inline-block w-0.5 h-3.5 bg-slate-800 align-middle animate-pulse"
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </div>
-        <div className="flex flex-wrap gap-1.5">
-          {["CBT", "Boundaries", "Family systems"].map((tag) => (
-            <span
-              key={tag}
-              className="text-[11px] font-medium text-teal-700 bg-teal-50 border border-teal-100 px-2 py-0.5 rounded-full"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        <div className="flex gap-2 pt-1">
+
+        <div className="flex gap-2">
           <button className="flex-1 text-[12px] font-semibold bg-slate-900 text-white rounded-lg py-2.5">
             Save note
           </button>
@@ -473,11 +610,11 @@ export function Features() {
         <FeatureRow
           label="Session logs"
           title="Write notes the way you think"
-          body="Free-text by default. Add date, duration, and tags when you want structure — skip them when you don't. Your notes stay yours: encrypted, searchable, exportable."
+          body="Rich text from the start — headings, bold, emojis, and checklists you can tick off mid-session. No mandatory fields. Just open a session and write."
           bullets={[
-            "No mandatory fields — just start writing",
-            "Tags for themes, modalities, or anything you track",
-            "Every save is encrypted and timestamped",
+            "Bold, headings, bullet lists, and checklists — not just a textarea",
+            "Tick off goals mid-session with a checklist that saves with the note",
+            "Every save is encrypted, timestamped, and full-text searchable",
           ]}
           mockup={<SessionLogMockup />}
           reverse
