@@ -1,10 +1,14 @@
 import { Nav } from "@/components/sections/nav";
+import { Hero } from "@/components/sections/hero";
 
 export default function Home() {
   return (
     <>
       <Nav />
-      <main>{/* Sections will be added here section by section */}</main>
+      <main>
+        <Hero />
+        {/* More sections will be added here */}
+      </main>
     </>
   );
 }
