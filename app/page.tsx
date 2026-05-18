@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/hero";
 import { Problem } from "@/components/sections/problem";
 import { Features } from "@/components/sections/features";
 import { Security } from "@/components/sections/security";
+import { Pricing } from "@/components/sections/pricing";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <Problem />
         <Features />
         <Security />
+        <Pricing />
         {/* More sections will be added here */}
       </main>
     </>
