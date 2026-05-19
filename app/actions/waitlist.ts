@@ -24,6 +24,8 @@ export async function joinWaitlist(formData: FormData): Promise<{
   // After DNS verification, change to: FollowUpSession Waitlist <waitlist@followupsession.com>
   const { error } = await resend.emails.send({
     from: "FollowUpSession Waitlist <onboarding@resend.dev>",
+    // Must match your Resend account email while using onboarding@resend.dev as the from address.
+    // Once followupsession.com is verified in Resend, you can send to any address.
     to: process.env.NOTIFICATION_EMAIL ?? "deegha@codewavelabs.io",
     subject: `New waitlist signup: ${email}`,
     html: `
