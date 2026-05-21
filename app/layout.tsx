@@ -66,6 +66,18 @@ export default function RootLayout({
             gtag('config', 'G-9SKHJ6Y4TE');
           `}
         </Script>
+        <Script id="betterstack" strategy="afterInteractive">
+          {`
+            !function(b,e,t,r){
+              b[t]=b[t]||function(...args){(b[t].q=b[t].q||[]).push(args)};
+              b[t].l=+new Date;
+              var s=e.createElement('script'); s.async=1; s.crossOrigin='anonymous';
+              s.src='https://betterstack.net/b.js?t='+r;
+              (e.head||e.getElementsByTagName('head')[0]).appendChild(s);
+            }(window,document,'betterstack','G3haBHHJSeuqSRrY2nw8pkxt');
+            betterstack('init', { environment: 'production' });
+          `}
+        </Script>
       </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
