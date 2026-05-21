@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { Check } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 const included = [
   "Unlimited clients and session logs",
@@ -12,8 +16,27 @@ const included = [
 ];
 
 export function Pricing() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          trackEvent("pricing_section_viewed");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="pricing" className="bg-stone-50 py-20 sm:py-28">
+    <section id="pricing" ref={sectionRef} className="bg-stone-50 py-20 sm:py-28">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-xl mx-auto mb-12">
           <p className="text-sm font-semibold text-teal-600 uppercase tracking-widest mb-3">

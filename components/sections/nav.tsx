@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -54,6 +55,7 @@ export function Nav() {
 
           <a
             href="#waitlist"
+            onClick={() => trackEvent("nav_cta_clicked", { location: "top_nav" })}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-slate-900 text-white px-4 py-2 hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
           >
             Join the waitlist

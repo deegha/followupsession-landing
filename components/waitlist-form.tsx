@@ -6,6 +6,8 @@ import { useState, useTransition } from "react";
 import { joinWaitlist } from "@/app/actions/waitlist";
 import { waitlistSchema, type WaitlistFormData } from "@/lib/types/waitlist";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
+import { useRef } from "react";
 
 interface WaitlistFormProps {
   className?: string;
@@ -17,6 +19,7 @@ export function WaitlistForm({ className, inputClassName, buttonClassName }: Wai
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const emailFocusTracked = useRef(false);
 
   const {
     register,
@@ -65,6 +68,12 @@ export function WaitlistForm({ className, inputClassName, buttonClassName }: Wai
             autoComplete="email"
             placeholder="your@email.com"
             {...register("email")}
+            onFocus={() => {
+              if (!emailFocusTracked.current) {
+                emailFocusTracked.current = true;
+                trackEvent("email_input_focused", { form: "waitlist" });
+              }
+            }}
             aria-describedby={errors.email ? "waitlist-email-error" : undefined}
             className={cn(
               "w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400",
@@ -76,6 +85,7 @@ export function WaitlistForm({ className, inputClassName, buttonClassName }: Wai
         <button
           type="submit"
           disabled={isPending}
+          onClick={() => trackEvent("waitlist_join_clicked", { location: "hero_form" })}
           className={cn(
             "inline-flex items-center justify-center rounded-md bg-slate-900 text-white text-sm font-medium px-6 py-2.5",
             "hover:bg-slate-800 transition-colors disabled:opacity-60 whitespace-nowrap",
