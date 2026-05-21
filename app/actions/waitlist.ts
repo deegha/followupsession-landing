@@ -2,6 +2,10 @@
 
 import { Resend } from "resend";
 import { waitlistSchema } from "@/lib/types/waitlist";
+import {
+  waitlistConfirmationHtml,
+  waitlistConfirmationText,
+} from "@/lib/emails/waitlist-confirmation";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -20,24 +24,31 @@ export async function joinWaitlist(formData: FormData): Promise<{
   const { email } = result.data;
   const signedUpAt = new Date().toUTCString();
 
-  // Use onboarding@resend.dev until followupsession.com is verified in Resend dashboard.
-  // After DNS verification, change to: FollowUpSession Waitlist <waitlist@followupsession.com>
-  const { error } = await resend.emails.send({
-    from: "FollowUpSession Waitlist <hello@followupsession.com>",
-    // Must match your Resend account email while using onboarding@resend.dev as the from address.
-    // Once followupsession.com is verified in Resend, you can send to any address.
-    to: process.env.NOTIFICATION_EMAIL ?? "deegha@codewavelabs.io",
-    subject: `New waitlist signup: ${email}`,
-    html: `
-      <h2>New FollowUpSession waitlist signup</h2>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Signed up at:</strong> ${signedUpAt}</p>
-    `,
-    text: `New FollowUpSession waitlist signup\n\nEmail: ${email}\nSigned up at: ${signedUpAt}`,
-  });
+  const FROM = "FollowUpSession <hello@followupsession.com>";
 
-  if (error) {
-    console.error("[waitlist] Resend error:", error);
+  const [notificationResult, confirmationResult] = await Promise.all([
+    resend.emails.send({
+      from: FROM,
+      to: process.env.NOTIFICATION_EMAIL ?? "deegha@codewavelabs.io",
+      subject: `New waitlist signup: ${email}`,
+      html: `
+        <h2>New FollowUpSession waitlist signup</h2>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Signed up at:</strong> ${signedUpAt}</p>
+      `,
+      text: `New FollowUpSession waitlist signup\n\nEmail: ${email}\nSigned up at: ${signedUpAt}`,
+    }),
+    resend.emails.send({
+      from: FROM,
+      to: email,
+      subject: "You're on the list — FollowUpSession",
+      html: waitlistConfirmationHtml(),
+      text: waitlistConfirmationText(),
+    }),
+  ]);
+
+  if (notificationResult.error || confirmationResult.error) {
+    console.error("[waitlist] Resend error:", notificationResult.error ?? confirmationResult.error);
     return { success: false, error: "Something went wrong. Please try again." };
   }
 
