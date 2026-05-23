@@ -17,6 +17,31 @@ export const metadata: Metadata = {
   title: "FollowUpSession — The simple session notebook for solo therapists",
   description:
     "Log sessions, set follow-up reminders, and never let a client slip through the cracks. Secure, simple, built for solo practitioners. $15/month. 30-day free trial.",
+  openGraph: {
+    title: "FollowUpSession — The simple session notebook for solo therapists",
+    description:
+      "Log sessions, set follow-up reminders, and never let a client slip through the cracks. Secure, simple, built for solo practitioners. $15/month. 30-day free trial.",
+    url: "https://followupsession.com",
+    siteName: "FollowUpSession",
+    images: [
+      {
+        url: "https://res.cloudinary.com/duqpgdc9v/image/upload/v1779508298/Meta_image_for_follow_up_session_ijvkdj.png",
+        width: 1200,
+        height: 630,
+        alt: "FollowUpSession — The simple session notebook for solo therapists",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FollowUpSession — The simple session notebook for solo therapists",
+    description:
+      "Log sessions, set follow-up reminders, and never let a client slip through the cracks. Secure, simple, built for solo practitioners. $15/month. 30-day free trial.",
+    images: [
+      "https://res.cloudinary.com/duqpgdc9v/image/upload/v1779508298/Meta_image_for_follow_up_session_ijvkdj.png",
+    ],
+  },
   manifest: "/manifest.json",
   icons: {
     icon: [
